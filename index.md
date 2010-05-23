@@ -457,6 +457,36 @@ _"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on
 
 [github.com/brynary/rack-test](http://github.com/brynary/rack-test)
 
+!SLIDE big
+
+@@@ ruby
+    # Gemfile
+    
+    gem "rack-test"
+@@@
+
+!SLIDE medium
+
+@@@ ruby
+    require "rack/test"
+
+    class UsersControllerTest < Test::Unit::TestCase
+      include Rack::Test::Methods
+
+      def app
+        Foobar::Router.new
+      end
+
+      def test_redirect_from_old_dashboard
+        get "/old_dashboard"
+        follow_redirect!
+
+        assert_equal "http://example.org/new_dashboard", last_request.url
+        assert last_response.ok?
+      end
+    end
+@@@
+
 !SLIDE
 
 # (7/7) Console

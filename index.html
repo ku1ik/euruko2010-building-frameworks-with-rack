@@ -498,20 +498,52 @@
             </div>
           </div>
         
-          <div class="">
+          <div class=" big">
             <div id="slide-41" class="content">
+              <div class="highlight ruby code highlight"><pre><span class="c1"># Gemfile</span>
+
+<span class="n">gem</span> <span class="s2">"rack-test"</span>
+</pre></div>
+            </div>
+          </div>
+        
+          <div class=" medium">
+            <div id="slide-42" class="content">
+              <div class="highlight ruby code highlight"><pre><span class="nb">require</span> <span class="s2">"rack/test"</span>
+
+<span class="k">class</span> <span class="nc">UsersControllerTest</span> <span class="o">&lt;</span> <span class="no">Test</span><span class="o">::</span><span class="no">Unit</span><span class="o">::</span><span class="no">TestCase</span>
+  <span class="kp">include</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Test</span><span class="o">::</span><span class="no">Methods</span>
+
+  <span class="k">def</span> <span class="nf">app</span>
+    <span class="no">Foobar</span><span class="o">::</span><span class="no">Router</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_redirect_from_old_dashboard</span>
+    <span class="n">get</span> <span class="s2">"/old_dashboard"</span>
+    <span class="n">follow_redirect!</span>
+
+    <span class="n">assert_equal</span> <span class="s2">"http://example.org/new_dashboard"</span><span class="p">,</span> <span class="n">last_request</span><span class="o">.</span><span class="n">url</span>
+    <span class="n">assert</span> <span class="n">last_response</span><span class="o">.</span><span class="n">ok?</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+            </div>
+          </div>
+        
+          <div class="">
+            <div id="slide-43" class="content">
               <h1>(7/7) Console</h1>
             </div>
           </div>
         
           <div class="">
-            <div id="slide-42" class="content">
+            <div id="slide-44" class="content">
               <h2>racksh (aka Rack::Shell)</h2><p><em>"<strong>racksh</strong> is a console for Rack based ruby web applications. It's like Rails </em>script/console<em> or Merb's </em>merb -i<em>, but for any app built on Rack"</em></p><p><a href="http://github.com/sickill/racksh">github.com/sickill/racksh</a></p>
             </div>
           </div>
         
           <div class=" medium">
-            <div id="slide-43" class="content">
+            <div id="slide-45" class="content">
               <h2>Installation</h2><pre><code>gem install racksh
 </code></pre><h2>Example racksh session</h2><pre><code>% racksh
 Rack::Shell v0.9.7 started in development environment.
@@ -524,7 +556,7 @@ Rack::Shell v0.9.7 started in development environment.
           </div>
         
           <div class=" last">
-            <div id="slide-44" class="content">
+            <div id="slide-46" class="content">
               <h1>That's it!</h1><p>Slides available at: <a href="http://github.com/sickill/euruko2010-building-frameworks-with-rack">github.com/sickill/euruko2010-building-frameworks-with-rack</a></p><p>Example code available at: <a href="http://github.com/sickill/example-rack-framework">github.com/sickill/example-rack-framework</a></p><p>Contact me: <a href="marcin.kulik@gmail.com">marcin.kulik@gmail.com</a></p><h1>Questions?</h1>
             </div>
           </div>
