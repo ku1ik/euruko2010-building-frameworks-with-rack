@@ -5,31 +5,59 @@
 <br/>
 <br/>
 
-Marcin Kulik
+### Marcin Kulik
 
-marcin.kulik@gmail.com
+<br/>
 
-2010/03/01
+EuRuKo,  2010/05/30
+
+!SLIDE big
+
+## About me
+
+ * Senior developer @ Lunar Logic Polska - agile Ruby on Rails development services
+ * Working with web for 10 years
+ * Using Ruby, Python, Java and others - in love with Ruby since 2007
+ * Contributing to Open Source:
+   * Open File Fast - quickly open files in Netbeans and JEdit
+   * racksh - console for Rack apps
+   * Kodr - programmers editor
+   * .....
+
 
 !SLIDE big
 
 ## Presentation plan
 
- * Few words about Rack
- * "Foobar" framework vision
- * Implementation
+ * Why would you need another framework
+ * How does typical web framework look like
+ * Available Rack middleware and tools we can use
  * Q&A
 
 !SLIDE
 
-# Few words about Rack
+## Why would you need another framework?
+
+"Because world needs yet another framework ;-)" - Tomash
 
 !SLIDE
 
-## Rack is a....
+## No, you probably don't need it actually :)
 
- * ruby web applications interface
- * library
+ * Tens of mature frameworks
+ * Hundreds of custom/experimental ones
+ * "Don't reinvent the wheel", right?
+ * But...
+
+!SLIDE
+
+## But it's so easy that you should at least try
+
+ * Rack provides everything you'll need, is extremely simple but extremely powerful
+ * It will help you to better understand HTTP
+ * It will make you better developer
+ * Your custom framework will be the fastest one *
+ * It's fun! A lot of fun :)
 
 !SLIDE
 
@@ -37,56 +65,52 @@ marcin.kulik@gmail.com
 
 @@@ ruby
     run lambda do |env|
-      [200, { "Content-type" => "text/plain" }, ["Hello KRUG!"]]
+      [200, { "Content-type" => "text/plain" }, ["Hello EuRuKo 2010!"]]
     end
 @@@
- 
-!SLIDE
-
-# "Foobar" framework vision
 
 !SLIDE
 
-## "Foobar" framework vision
+# Let's transform it into framework!
 
-MVC, Rails/Merb-like framework
+!SLIDE
 
-Features we'd like to have:
+## How does typical web framework look like?
 
- * gem dependency management
+  * Rails
+  * Merb
+  * Pylons
+  * Django
+  * Rango
+
+!SLIDE
+
+# Looks like MVC, more or less
+
+!SLIDE
+
+## What features we'd like to have?
+
+ * dependencies management
  * RESTful routing
  * controllers
- * views (layouts, templates and partials)
- * basic controller methods (redirects, flash[], session[], headers[])
- * models (ORM)
+   * session
+   * flash messages
+ * views
+   * layouts
+   * templates
+   * partials
  * authentication
+ * testing
  * console
 
 !SLIDE
 
-# Implementation
+# Available Rack middleware and tools we can use
 
 !SLIDE
 
-## Request flow
-
-@@@
-    HTTP request -> Rack -> router (config.ru) -> controller
-    controller (generates response) -> Rack -> HTTP response
-@@@
-
-!SLIDE
-
-## Prerequisites
-
-@@@ ruby
-    # config.ru
-    APP_ROOT = ::File.expand_path(::File.dirname(__FILE__))
-@@@
-
-!SLIDE
-
-# (1/8) Gem dependency management
+# (1/7) Gem dependency management
 
 !SLIDE
 
@@ -113,7 +137,7 @@ _"A gem to bundle gems"_
 
 !SLIDE
 
-# (2/8) Routing
+# (2/7) Routing
 
 !SLIDE
 
@@ -145,60 +169,45 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
     module Foobar
       Router = Usher::Interface.for(:rack) do
         get('/').to(HomeController.action(:welcome)).name(:root) # root URL
-        get('/:controller(/)').to(lambda { |env| BaseController.dispatch(env, :index) }) # index
-        get('/:controller/{:id,\d+}(/)').to(lambda { |env| BaseController.dispatch(env, :show) }) # show
-        get('/:controller/new(/)').to(lambda { |env| BaseController.dispatch(env, :new) }) # new
-        post('/:controller(/)').to(lambda { |env| BaseController.dispatch(env, :create) }) # create
-        put('/:controller/{:id,\d+}(/)').to(lambda { |env| BaseController.dispatch(env, :update) }) # update
-        delete('/:controller/{:id,\d+}(/)').to(lambda { |env| BaseController.dispatch(env, :destroy) }) # destroy
         add('/login').to(SessionController.action(:login)).name(:login) # login
         get('/logout').to(SessionController.action(:logout)).name(:logout) # logout
+        ...
         default ExceptionsController.action(:not_found) # 404
       end
     end
-    
-    env["usher.params"] == { :controller => "users", :id => 666 }
 @@@
 
 !SLIDE
 
-# (3/8) Controllers
+# (3/7) Controller
 
 !SLIDE
 
-## Let's build our "base" controller
+## Let's build our base controller
 
- * value returned from action becomes "body" of the response
  * every action is valid Rack endpoint
+ * value returned from action becomes body of the response
 
-!SLIDE small
+!SLIDE medium
 
 @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
       class BaseController
-        def self.dispatch(env, action_name)
-          controller_name = env["usher.params"][:controller]
-          name = controller_name.camel_case + "Controller"
-          controller = Object.const_get(name)
-          action = controller.action(action_name)
-          action.call(env)
-        end
-        
-        def self.action(name)
-          lambda do |env|
-            env['x-rack.action-name'] = name
-            self.new.call(env)
-          end
-        end
-        
         def call(env)
           @request = Rack::Request.new(env)
           @response = Rack::Response.new
           resp_text = self.send(env['x-rack.action-name'])
           @response.write(resp_text)
           @response.finish
+        end
+
+        def self.action(name)
+          lambda do |env|
+            env['x-rack.action-name'] = name
+            self.new.call(env)
+          end
         end
       end
     end
@@ -217,7 +226,7 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
 
 !SLIDE
 
-## Example controller
+## Now we can create UsersController
 
 @@@ ruby
     # app/controllers/users_controller.rb
@@ -231,104 +240,13 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
 
 !SLIDE
 
-# (4/8) Views
+## Controllers also need following:
 
-!SLIDE
-
-## Tilt
-
-_"Generic interface to multiple Ruby template engines"_
-
-[github.com/rtomayko/tilt](http://github.com/rtomayko/tilt)
-
-!SLIDE big
-
-@@@ ruby
-    # Gemfile
-    
-    gem "tilt"
-    
-    # lib/base_controller.rb
-    
-    module Foobar
-      class BaseController
-        include Rendering
-        ...
-      end
-    end
-@@@
-
-!SLIDE small
-
-@@@ ruby
-    # lib/rendering.rb
-
-    module Foobar
-      module Rendering
-        def get_templates_dir
-          "#{APP_ROOT}/app/views/#{controller_name}"
-        end
-        
-        def render(text=nil)
-          layout_path = "#{APP_ROOT}/app/views/layouts/application.html.erb"
-          if text.nil? || text.is_a?(Symbol)
-            template = text || @request.env['x-rack.action-name']
-            template_path = "#{get_templates_dir}/#{template}.html.erb"
-            text = Tilt.new(template_path).render(self)
-          end
-          Tilt.new(layout_path).render(self) do
-            text
-          end
-        end
-        
-        def partial(template, opts={})
-          template_path = "#{get_templates_dir}/_#{template}.html.erb"
-          locals = { template.to_sym => opts.delete(:with) }.merge!(opts)
-          Tilt.new(template_path).render(self, locals)
-        end
-      end
-    end
-@@@
-
-!SLIDE medium
-
-## Example of rendering template
-
-@@@ ruby
-    # app/controllers/users_controller.rb
-    
-    class UsersController < Foobar::BaseController
-      def index
-        @users = User.all
-        render
-      end
-    end
-@@@
-
-@@@ rhtml
-    <!-- app/views/users/index.html.erb -->
-    
-    <h2>Users list</h2>
-    
-    <% @users.each do |user| %>
-      <%= partial :user, :with => user, :comments => true %>
-    <% end %>
-@@@
-
-!SLIDE
-
-# (5/8) Basic controller methods
-
-!SLIDE
-
-## We need stuff like this:
-
- * `session[]`
- * `flash[]`
- * `redirect_to`
- * `link_to`
- * `url(:foo)`
- * `headers[]`
+ * session access
+ * setting flash messages
+ * setting HTTP headers
+ * redirects
+ * url generation
  
 !SLIDE
 
@@ -360,60 +278,27 @@ _"Simple flash hash implementation for Rack apps"_
     use Rack::NestedParams
 @@@
 
-!SLIDE big
+!SLIDE medium
 
 @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
       class BaseController
-        include Rendering
-        include BasicHelpers
-        ...
-      end
-    end
-@@@
-
-!SLIDE verysmall
-
-@@@ ruby
-    # lib/basic_helpers.rb
+        def status=(code); @response.status = code; end
+        
+        def headers; @response.header; end
+        
+        def session; @request.env['rack.session']; end
+        
+        def flash; @request.env['x-rack.flash']; end
     
-    module Foobar
-      module BasicHelpers
-        def controller_name
-          self.class.to_s.snake_case.gsub('_controller', '')
-        end
-      
-        def status=(code)
-          @response.status = code
-        end
-        
-        def headers
-          @response.header
-        end
-        
+        def url(name, opts={}); Router.generate(name, opts); end
+
         def redirect_to(url)
           self.status = 302
           headers["Location"] = url
           "You're being redirected"
-        end
-        
-        def session
-          @request.env['rack.session']
-        end
-        
-        def flash
-          @request.env['x-rack.flash']
-        end
-    
-        def link_to(label, url=nil)
-          url ||= label
-          %(<a href="#{url}">#{label}</a>)
-        end
-        
-        def url(name, opts={})
-          Router.generate(name, opts)
         end
       end
     end
@@ -421,7 +306,7 @@ _"Simple flash hash implementation for Rack apps"_
 
 !SLIDE medium
 
-## Example use of #session, #flash and #redirect
+## Now we can use #session, #flash and #redirect_to
 
 @@@ ruby
     # app/controllers/users_controller.rb
@@ -440,42 +325,46 @@ _"Simple flash hash implementation for Rack apps"_
 
 !SLIDE
 
-# (6/8) Models
+# (4/7) Views
 
 !SLIDE
 
-## DataMapper
+## Tilt
 
-_"DataMapper is a Object Relational Mapper written in Ruby. The goal is to create an ORM which is fast, thread-safe and feature rich."_
+_"Generic interface to multiple Ruby template engines"_
 
-[datamapper.org](http://datamapper.org/)
+[github.com/rtomayko/tilt](http://github.com/rtomayko/tilt)
 
-!SLIDE medium
+!SLIDE big
 
 @@@ ruby
     # Gemfile
     
-    gem "dm-core"
-    gem "dm-..."
-    
-    # app/models/user.rb
+    gem "tilt"
+@@@
 
-    class User
-      include DataMapper::Resource
-      
-      property :id, Serial
-      property :login, String, :required => true
-      property :password, String, :required => true # don't forget to encrypt in real app
+!SLIDE medium
+
+@@@ ruby
+    # lib/base_controller.rb
+    
+    module Foobar
+      class BaseController
+        def render(template=nil)
+          template ||= @request.env['x-rack.action-name']
+          template_path = "#{APP_ROOT}/app/views/#{self.class.to_s.underscore}/#{template}.html.erb"
+          layout_path = "#{APP_ROOT}/app/views/layouts/application.html.erb"
+          Tilt.new(layout_path).render(self) do
+            Tilt.new(template_path).render(self)
+          end
+        end
+      end
     end
-    
-    # config.ru
-
-    Dir[APP_ROOT / "app" / "models" / "*.rb"].each { |f| require f }
 @@@
 
 !SLIDE
 
-# (7/8) Authentication
+# (5/7) Authentication
 
 !SLIDE
 
@@ -498,6 +387,8 @@ _"General Rack Authentication Framework"_
       manager.default_strategies :password
       manager.failure_app = ExceptionsController.action(:unauthenticated)
     end
+
+    require "#{APP_ROOT}/lib/warden.rb"
 @@@
 
 !SLIDE medium
@@ -516,48 +407,18 @@ _"General Rack Authentication Framework"_
     end
 @@@
 
-!SLIDE big
-
-@@@ ruby
-    # app/models/user.rb
-    
-    class User
-      include DataMapper::Resource
-      ...
-      
-      def self.authenticate(login, password)
-        first(:login => login, :password => password)
-      end
-    end
-@@@
-
-!SLIDE big
+!SLIDE medium
 
 @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
       class BaseController
-        include Rendering
-        include BasicHelpers
-        include Authentication
-        ...
-      end
-    end
-@@@
-
-!SLIDE medium
-
-@@@ ruby
-    # lib/authentication.rb
-    
-    module Foobar
-      module Authentication
         def authenticate!
           @request.env['warden'].authenticate!
         end
         
-        def logout!(scope=:default)
+        def logout!(scope=nil)
           @request.env['warden'].logout(scope)
         end
         
@@ -570,7 +431,7 @@ _"General Rack Authentication Framework"_
 
 !SLIDE medium
 
-## Example of action requiring authenticated user
+## Now we can guard our action:
 
 @@@ ruby
     # app/controllers/users_controller.rb
@@ -578,7 +439,7 @@ _"General Rack Authentication Framework"_
     class UsersController < Foobar::BaseController
       def index
         authenticate!
-        @users = User.all
+        @users = User.all(:id.not => current_user.id)
         render
       end
     end
@@ -586,13 +447,25 @@ _"General Rack Authentication Framework"_
 
 !SLIDE
 
-# (8/8) Console
+# (6/7) Testing
+
+!SLIDE
+
+## rack-test
+
+_"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on its own or as a reusable starting point for Web frameworks and testing libraries to build on."_
+
+[github.com/brynary/rack-test](http://github.com/brynary/rack-test)
+
+!SLIDE
+
+# (7/7) Console
 
 !SLIDE
 
 ## racksh (aka Rack::Shell)
 
-_"**racksh** is a console for Rack based ruby web applications. It's like Rails' _script/console_ or Merb's _merb -i_, but for any app built on Rack"_
+_"**racksh** is a console for Rack based ruby web applications. It's like Rails _script/console_ or Merb's _merb -i_, but for any app built on Rack"_
 
 [github.com/sickill/racksh](http://github.com/sickill/racksh)
 
@@ -619,7 +492,11 @@ _"**racksh** is a console for Rack based ruby web applications. It's like Rails'
 
 # That's it!
 
-Code & slides available at: [github.com/sickill/example-rack-framework](http://github.com/sickill/example-rack-framework)
+Slides available at: [github.com/sickill/euruko2010-building-frameworks-with-rack](http://github.com/sickill/euruko2010-building-frameworks-with-rack)
+
+Example code available at: [github.com/sickill/example-rack-framework](http://github.com/sickill/example-rack-framework)
+
+Contact me: [marcin.kulik@gmail.com](marcin.kulik@gmail.com)
 
 # Questions?
 
