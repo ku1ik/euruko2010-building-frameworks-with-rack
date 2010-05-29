@@ -9,13 +9,18 @@
   src: local('Envy Code R Bold');
 }
 
+@font-face {
+  font-family: 'Munro';
+  src: local('Munro');
+}
+
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: Helvetica;
+  font-family: Munro; /*Helvetica;*/
   font-size: 38px;
   color: #111;
   background: #fff;
@@ -23,14 +28,14 @@ body {
 }
 
 pre, code {
-  font-family: 'Envy Code R';
+  font-family: Munro; /*'Envy Code R';*/
   font-size: 1em;
 }
 
 blockquote {
   padding: 0 0 0 1em;
   font-size: 1.4em;
-  font-family: Georgia, serif;
+  font-family: Munro; /*Georgia, serif;*/
   font-style: italic;
 }
 
@@ -141,30 +146,67 @@ ul {
 /* Sickill's style */
 
 body #slides {
-  font-size: 20pt;
+  font-size: 26pt;
 }
 
 body {
   background-color: #222;
   background-image: url(/images/darkaurora.png);
   color: #DDD;
-  font-family: 'Trebuchet MS';
+  font-family: Munro; /*'Trebuchet MS';*/
 }
 
 body #slides h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
-  text-shadow: #777 4px 4px 3px;
+  /*text-shadow: #777 4px 4px 3px;*/
 }
 
 body #slides h2 {
   font-size: 1.8em;
   margin-bottom: 15px;
-  text-shadow: #777 2px 2px 2px;
+  /*text-shadow: #777 2px 2px 2px;*/
 }
 
 p {
   margin-bottom: 15px;
+}
+
+.withphoto {
+  background-position: 650px 0;
+  background-repeat: repeat-y;
+}
+
+.photobundler {
+  background-image: url(/images/bundler.jpg);
+}
+
+.photousher {
+  background-image: url(/images/usher.jpg);
+}
+
+.phototilt {
+  background-image: url(/images/tilt.jpg);
+}
+
+.photowarden {
+  background-image: url(/images/warden.jpg);
+}
+
+.photoracktest {
+  background-image: url(/images/rack-test.jpg);
+}
+
+.photoracksh {
+  background-image: url(/images/racksh.jpg);
+}
+
+.photodm {
+  background-image: url(/images/datamapper.gif);
+}
+
+.withphoto div {
+  padding-right: 50%;
 }
 
 /*div .code pre {

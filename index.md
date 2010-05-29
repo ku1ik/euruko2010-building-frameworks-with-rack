@@ -1,6 +1,6 @@
 !SLIDE first
 
-# _Easy building of ruby web frameworks with Rack_
+# _Building web framework with Rack_
 
 <br/>
 <br/>
@@ -19,20 +19,10 @@ EuRuKo,  2010/05/30
  * Working with web for 10 years
  * Using Ruby, Python, Java and others - in love with Ruby since 2007
  * Contributing to Open Source:
-   * Open File Fast - quickly open files in Netbeans and JEdit
+   * CodeRack.org - Rack middleware contest
+   * Open File Fast - Netbeans and JEdit plugin
    * racksh - console for Rack apps
-   * Kodr - programmers editor
-   * .....
-
-
-!SLIDE big
-
-## Presentation plan
-
- * Why would you need another framework
- * How does typical web framework look like
- * Available Rack middleware and tools we can use
- * Q&A
+   * and many more (check [github.com/sickill](http://github.com/sickill/))
 
 !SLIDE
 
@@ -44,8 +34,8 @@ EuRuKo,  2010/05/30
 
 ## No, you probably don't need it actually :)
 
- * Tens of mature frameworks
- * Hundreds of custom/experimental ones
+ * Several mature frameworks
+ * Tens of custom/experimental ones
  * "Don't reinvent the wheel", right?
  * But...
 
@@ -61,11 +51,33 @@ EuRuKo,  2010/05/30
 
 !SLIDE
 
+# What is Rack?
+
+ * ruby web applications interface
+ * library
+
+!SLIDE
+
 ## Simplest Rack application
 
 @@@ ruby
     run lambda do |env|
       [200, { "Content-type" => "text/plain" }, ["Hello EuRuKo 2010!"]]
+    end
+@@@
+
+## Simplest Rack middleware
+
+@@@ ruby
+    class EurukoMiddleware
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        env['euruko'] = 2010
+        @app.call
+      end
     end
 @@@
 
@@ -100,6 +112,7 @@ EuRuKo,  2010/05/30
    * layouts
    * templates
    * partials
+ * ORM
  * authentication
  * testing
  * console
@@ -110,9 +123,9 @@ EuRuKo,  2010/05/30
 
 !SLIDE
 
-# (1/7) Gem dependency management
+# (1/8) Gem dependency management
 
-!SLIDE
+!SLIDE withphoto photobundler
 
 ## bundler
 
@@ -137,9 +150,9 @@ _"A gem to bundle gems"_
 
 !SLIDE
 
-# (2/7) Routing
+# (2/8) Routing
 
-!SLIDE
+!SLIDE withphoto photousher
 
 ## Usher
 
@@ -179,7 +192,7 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
 
 !SLIDE
 
-# (3/7) Controller
+# (3/8) Controller
 
 !SLIDE
 
@@ -325,9 +338,9 @@ _"Simple flash hash implementation for Rack apps"_
 
 !SLIDE
 
-# (4/7) Views
+# (4/8) Views
 
-!SLIDE
+!SLIDE withphoto phototilt
 
 ## Tilt
 
@@ -364,9 +377,44 @@ _"Generic interface to multiple Ruby template engines"_
 
 !SLIDE
 
-# (5/7) Authentication
+# (5/8) ORM
+
+!SLIDE withphoto photodm
+
+## DataMapper
+
+_"DataMapper is a Object Relational Mapper written in Ruby. The goal is to create an ORM which is fast, thread-safe and feature rich."_
+
+[datamapper.org](http://datamapper.org/)
+
+!SLIDE medium
+
+@@@ ruby
+    # Gemfile
+    
+    gem "dm-core"
+    gem "dm-..."
+    
+    # app/models/user.rb
+
+    class User
+      include DataMapper::Resource
+      
+      property :id, Serial
+      property :login, String, :required => true
+      property :password, String, :required => true # don't forget to encrypt in real app
+    end
+    
+    # config.ru
+
+    Dir[APP_ROOT / "app" / "models" / "*.rb"].each { |f| require f }
+@@@
 
 !SLIDE
+
+# (6/8) Authentication
+
+!SLIDE withphoto photowarden
 
 ## Warden
 
@@ -447,9 +495,9 @@ _"General Rack Authentication Framework"_
 
 !SLIDE
 
-# (6/7) Testing
+# (7/8) Testing
 
-!SLIDE
+!SLIDE withphoto photoracktest
 
 ## rack-test
 
@@ -489,9 +537,9 @@ _"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on
 
 !SLIDE
 
-# (7/7) Console
+# (8/8) Console
 
-!SLIDE
+!SLIDE withphoto photoracksh
 
 ## racksh (aka Rack::Shell)
 
@@ -522,11 +570,11 @@ _"**racksh** is a console for Rack based ruby web applications. It's like Rails 
 
 # That's it!
 
-Slides available at: [github.com/sickill/euruko2010-building-frameworks-with-rack](http://github.com/sickill/euruko2010-building-frameworks-with-rack)
+Slides available at: [euruko2010.sickill.net](http://euruko2010.sickill.net/)
 
 Example code available at: [github.com/sickill/example-rack-framework](http://github.com/sickill/example-rack-framework)
 
-Contact me: [marcin.kulik@gmail.com](marcin.kulik@gmail.com)
+email: [marcin.kulik@gmail.com](marcin.kulik@gmail.com) / www: [sickill.net](http://sickill.net/) / twitter: [@sickill](http://twitter.com/sickill/)
 
 # Questions?
 

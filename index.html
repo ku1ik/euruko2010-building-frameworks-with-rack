@@ -13,7 +13,7 @@
         
           <div class=" first">
             <div id="slide-0" class="content">
-              <h1><em>Easy building of ruby web frameworks with Rack</em></h1><br><br><h3>Marcin Kulik</h3><br><p>EuRuKo,  2010/05/30</p>
+              <h1><em>Building web framework with Rack</em></h1><br><br><h3>Marcin Kulik</h3><br><p>EuRuKo,  2010/05/30</p>
             </div>
           </div>
         
@@ -26,38 +26,27 @@
 <li>Contributing to Open Source:
 
 <ul>
-<li>Open File Fast - quickly open files in Netbeans and JEdit</li>
+<li>CodeRack.org - Rack middleware contest</li>
+<li>Open File Fast - Netbeans and JEdit plugin</li>
 <li>racksh - console for Rack apps</li>
-<li>Kodr - programmers editor</li>
-<li>.....</li>
+<li>and many more (check <a href="http://github.com/sickill/">github.com/sickill</a>)</li>
 </ul>
 </li>
 </ul>
             </div>
           </div>
         
-          <div class=" big">
-            <div id="slide-2" class="content">
-              <h2>Presentation plan</h2><ul>
-<li>Why would you need another framework</li>
-<li>How does typical web framework look like</li>
-<li>Available Rack middleware and tools we can use</li>
-<li>Q&amp;A</li>
-</ul>
-            </div>
-          </div>
-        
           <div class="">
-            <div id="slide-3" class="content">
+            <div id="slide-2" class="content">
               <h2>Why would you need another framework?</h2><p>"Because world needs yet another framework ;-)" - Tomash</p>
             </div>
           </div>
         
           <div class="">
-            <div id="slide-4" class="content">
+            <div id="slide-3" class="content">
               <h2>No, you probably don't need it actually :)</h2><ul>
-<li>Tens of mature frameworks</li>
-<li>Hundreds of custom/experimental ones</li>
+<li>Several mature frameworks</li>
+<li>Tens of custom/experimental ones</li>
 <li>"Don't reinvent the wheel", right?</li>
 <li>But...</li>
 </ul>
@@ -65,7 +54,7 @@
           </div>
         
           <div class="">
-            <div id="slide-5" class="content">
+            <div id="slide-4" class="content">
               <h2>But it's so easy that you should at least try</h2><ul>
 <li>Rack provides everything you'll need, is extremely simple but extremely powerful</li>
 <li>It will help you to better understand HTTP</li>
@@ -77,9 +66,28 @@
           </div>
         
           <div class="">
+            <div id="slide-5" class="content">
+              <h1>What is Rack?</h1><ul>
+<li>ruby web applications interface</li>
+<li>library</li>
+</ul>
+            </div>
+          </div>
+        
+          <div class="">
             <div id="slide-6" class="content">
               <h2>Simplest Rack application</h2><div class="highlight ruby code highlight"><pre><span class="n">run</span> <span class="nb">lambda</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
   <span class="o">[</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span> <span class="s2">"Content-type"</span> <span class="o">=&gt;</span> <span class="s2">"text/plain"</span> <span class="p">},</span> <span class="o">[</span><span class="s2">"Hello EuRuKo 2010!"</span><span class="o">]]</span>
+<span class="k">end</span>
+</pre></div><h2>Simplest Rack middleware</h2><div class="highlight ruby code highlight"><pre><span class="k">class</span> <span class="nc">EurukoMiddleware</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">[</span><span class="s1">'euruko'</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2010</span>
+    <span class="vi">@app</span><span class="o">.</span><span class="n">call</span>
+  <span class="k">end</span>
 <span class="k">end</span>
 </pre></div>
             </div>
@@ -129,6 +137,7 @@
 <li>partials</li>
 </ul>
 </li>
+<li>ORM</li>
 <li>authentication</li>
 <li>testing</li>
 <li>console</li>
@@ -144,11 +153,11 @@
         
           <div class="">
             <div id="slide-12" class="content">
-              <h1>(1/7) Gem dependency management</h1>
+              <h1>(1/8) Gem dependency management</h1>
             </div>
           </div>
         
-          <div class="">
+          <div class=" withphoto photobundler">
             <div id="slide-13" class="content">
               <h2>bundler</h2><p><em>"A gem to bundle gems"</em></p><p><a href="http://github.com/carlhuda/bundler">github.com/carlhuda/bundler</a></p>
             </div>
@@ -172,11 +181,11 @@
         
           <div class="">
             <div id="slide-15" class="content">
-              <h1>(2/7) Routing</h1>
+              <h1>(2/8) Routing</h1>
             </div>
           </div>
         
-          <div class="">
+          <div class=" withphoto photousher">
             <div id="slide-16" class="content">
               <h2>Usher</h2><p><em>"Pure ruby general purpose router with interfaces for rails, rack, email or choose your own adventure"</em></p><p><a href="http://github.com/joshbuddy/usher">github.com/joshbuddy/usher</a></p>
             </div>
@@ -216,7 +225,7 @@
         
           <div class="">
             <div id="slide-19" class="content">
-              <h1>(3/7) Controller</h1>
+              <h1>(3/8) Controller</h1>
             </div>
           </div>
         
@@ -362,11 +371,11 @@
         
           <div class="">
             <div id="slide-29" class="content">
-              <h1>(4/7) Views</h1>
+              <h1>(4/8) Views</h1>
             </div>
           </div>
         
-          <div class="">
+          <div class=" withphoto phototilt">
             <div id="slide-30" class="content">
               <h2>Tilt</h2><p><em>"Generic interface to multiple Ruby template engines"</em></p><p><a href="http://github.com/rtomayko/tilt">github.com/rtomayko/tilt</a></p>
             </div>
@@ -403,18 +412,54 @@
         
           <div class="">
             <div id="slide-33" class="content">
-              <h1>(5/7) Authentication</h1>
+              <h1>(5/8) ORM</h1>
             </div>
           </div>
         
-          <div class="">
+          <div class=" withphoto photodm">
             <div id="slide-34" class="content">
-              <h2>Warden</h2><p><em>"General Rack Authentication Framework"</em></p><p><a href="http://github.com/hassox/warden">github.com/hassox/warden</a></p>
+              <h2>DataMapper</h2><p><em>"DataMapper is a Object Relational Mapper written in Ruby. The goal is to create an ORM which is fast, thread-safe and feature rich."</em></p><p><a href="http://datamapper.org/">datamapper.org</a></p>
             </div>
           </div>
         
           <div class=" medium">
             <div id="slide-35" class="content">
+              <div class="highlight ruby code highlight"><pre><span class="c1"># Gemfile</span>
+
+<span class="n">gem</span> <span class="s2">"dm-core"</span>
+<span class="n">gem</span> <span class="s2">"dm-..."</span>
+
+<span class="c1"># app/models/user.rb</span>
+
+<span class="k">class</span> <span class="nc">User</span>
+  <span class="kp">include</span> <span class="no">DataMapper</span><span class="o">::</span><span class="no">Resource</span>
+
+  <span class="n">property</span> <span class="ss">:id</span><span class="p">,</span> <span class="no">Serial</span>
+  <span class="n">property</span> <span class="ss">:login</span><span class="p">,</span> <span class="nb">String</span><span class="p">,</span> <span class="ss">:required</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">property</span> <span class="ss">:password</span><span class="p">,</span> <span class="nb">String</span><span class="p">,</span> <span class="ss">:required</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="c1"># don't forget to encrypt in real app</span>
+<span class="k">end</span>
+
+<span class="c1"># config.ru</span>
+
+<span class="no">Dir</span><span class="o">[</span><span class="no">APP_ROOT</span> <span class="o">/</span> <span class="s2">"app"</span> <span class="o">/</span> <span class="s2">"models"</span> <span class="o">/</span> <span class="s2">"*.rb"</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="nb">require</span> <span class="n">f</span> <span class="p">}</span>
+</pre></div>
+            </div>
+          </div>
+        
+          <div class="">
+            <div id="slide-36" class="content">
+              <h1>(6/8) Authentication</h1>
+            </div>
+          </div>
+        
+          <div class=" withphoto photowarden">
+            <div id="slide-37" class="content">
+              <h2>Warden</h2><p><em>"General Rack Authentication Framework"</em></p><p><a href="http://github.com/hassox/warden">github.com/hassox/warden</a></p>
+            </div>
+          </div>
+        
+          <div class=" medium">
+            <div id="slide-38" class="content">
               <div class="highlight ruby code highlight"><pre><span class="c1"># Gemfile</span>
 
 <span class="n">gem</span> <span class="s2">"warden"</span>
@@ -432,7 +477,7 @@
           </div>
         
           <div class=" medium">
-            <div id="slide-36" class="content">
+            <div id="slide-39" class="content">
               <div class="highlight ruby code highlight"><pre><span class="c1"># lib/warden.rb</span>
 
 <span class="no">Warden</span><span class="o">::</span><span class="no">Manager</span><span class="o">.</span><span class="n">serialize_into_session</span> <span class="p">{</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="p">}</span>
@@ -449,7 +494,7 @@
           </div>
         
           <div class=" medium">
-            <div id="slide-37" class="content">
+            <div id="slide-40" class="content">
               <div class="highlight ruby code highlight"><pre><span class="c1"># lib/base_controller.rb</span>
 
 <span class="k">module</span> <span class="nn">Foobar</span>
@@ -472,7 +517,7 @@
           </div>
         
           <div class=" medium">
-            <div id="slide-38" class="content">
+            <div id="slide-41" class="content">
               <h2>Now we can guard our action:</h2><div class="highlight ruby code highlight"><pre><span class="c1"># app/controllers/users_controller.rb</span>
 
 <span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">Foobar</span><span class="o">::</span><span class="no">BaseController</span>
@@ -487,19 +532,19 @@
           </div>
         
           <div class="">
-            <div id="slide-39" class="content">
-              <h1>(6/7) Testing</h1>
+            <div id="slide-42" class="content">
+              <h1>(7/8) Testing</h1>
             </div>
           </div>
         
-          <div class="">
-            <div id="slide-40" class="content">
+          <div class=" withphoto photoracktest">
+            <div id="slide-43" class="content">
               <h2>rack-test</h2><p><em>"<strong>Rack::Test</strong> is a small, simple testing API for Rack apps. It can be used on its own or as a reusable starting point for Web frameworks and testing libraries to build on."</em></p><p><a href="http://github.com/brynary/rack-test">github.com/brynary/rack-test</a></p>
             </div>
           </div>
         
           <div class=" big">
-            <div id="slide-41" class="content">
+            <div id="slide-44" class="content">
               <div class="highlight ruby code highlight"><pre><span class="c1"># Gemfile</span>
 
 <span class="n">gem</span> <span class="s2">"rack-test"</span>
@@ -508,7 +553,7 @@
           </div>
         
           <div class=" medium">
-            <div id="slide-42" class="content">
+            <div id="slide-45" class="content">
               <div class="highlight ruby code highlight"><pre><span class="nb">require</span> <span class="s2">"rack/test"</span>
 
 <span class="k">class</span> <span class="nc">UsersControllerTest</span> <span class="o">&lt;</span> <span class="no">Test</span><span class="o">::</span><span class="no">Unit</span><span class="o">::</span><span class="no">TestCase</span>
@@ -531,19 +576,19 @@
           </div>
         
           <div class="">
-            <div id="slide-43" class="content">
-              <h1>(7/7) Console</h1>
+            <div id="slide-46" class="content">
+              <h1>(8/8) Console</h1>
             </div>
           </div>
         
-          <div class="">
-            <div id="slide-44" class="content">
+          <div class=" withphoto photoracksh">
+            <div id="slide-47" class="content">
               <h2>racksh (aka Rack::Shell)</h2><p><em>"<strong>racksh</strong> is a console for Rack based ruby web applications. It's like Rails </em>script/console<em> or Merb's </em>merb -i<em>, but for any app built on Rack"</em></p><p><a href="http://github.com/sickill/racksh">github.com/sickill/racksh</a></p>
             </div>
           </div>
         
           <div class=" medium">
-            <div id="slide-45" class="content">
+            <div id="slide-48" class="content">
               <h2>Installation</h2><pre><code>gem install racksh
 </code></pre><h2>Example racksh session</h2><pre><code>% racksh
 Rack::Shell v0.9.7 started in development environment.
@@ -556,8 +601,8 @@ Rack::Shell v0.9.7 started in development environment.
           </div>
         
           <div class=" last">
-            <div id="slide-46" class="content">
-              <h1>That's it!</h1><p>Slides available at: <a href="http://github.com/sickill/euruko2010-building-frameworks-with-rack">github.com/sickill/euruko2010-building-frameworks-with-rack</a></p><p>Example code available at: <a href="http://github.com/sickill/example-rack-framework">github.com/sickill/example-rack-framework</a></p><p>Contact me: <a href="marcin.kulik@gmail.com">marcin.kulik@gmail.com</a></p><h1>Questions?</h1>
+            <div id="slide-49" class="content">
+              <h1>That's it!</h1><p>Slides available at: <a href="http://euruko2010.sickill.net/">euruko2010.sickill.net</a></p><p>Example code available at: <a href="http://github.com/sickill/example-rack-framework">github.com/sickill/example-rack-framework</a></p><p>email: <a href="marcin.kulik@gmail.com">marcin.kulik@gmail.com</a> / www: <a href="http://sickill.net/">sickill.net</a> / twitter: <a href="http://twitter.com/sickill/">@sickill</a></p><h1>Questions?</h1>
             </div>
           </div>
         
