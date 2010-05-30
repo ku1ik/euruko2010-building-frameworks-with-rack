@@ -17,9 +17,9 @@ EuRuKo,  2010/05/30
 
  * Senior developer @ Lunar Logic Polska - agile Ruby on Rails development services
  * Working with web for 10 years
- * Using Ruby, Python, Java and others - in love with Ruby since 2007
+ * Using Ruby, Python, Java and others - in love with Ruby since 2006
  * Contributing to Open Source:
-   * CodeRack.org - Rack middleware contest
+   * CodeRack.org - Rack middleware repository
    * Open File Fast - Netbeans and JEdit plugin
    * racksh - console for Rack apps
    * and many more (check [github.com/sickill](http://github.com/sickill/))
