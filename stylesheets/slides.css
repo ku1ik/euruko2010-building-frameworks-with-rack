@@ -9,18 +9,13 @@
   src: local('Envy Code R Bold');
 }
 
-@font-face {
-  font-family: 'Munro';
-  src: local('Munro');
-}
-
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: Munro; /*Helvetica;*/
+  font-family: Helvetica;
   font-size: 38px;
   color: #111;
   background: #fff;
@@ -28,14 +23,14 @@ body {
 }
 
 pre, code {
-  font-family: Munro; /*'Envy Code R';*/
+  font-family: 'Envy Code R';
   font-size: 1em;
 }
 
 blockquote {
   padding: 0 0 0 1em;
   font-size: 1.4em;
-  font-family: Munro; /*Georgia, serif;*/
+  font-family: Georgia, serif;
   font-style: italic;
 }
 
@@ -146,14 +141,14 @@ ul {
 /* Sickill's style */
 
 body #slides {
-  font-size: 26pt;
+  font-size: 20pt; /* 26, 20 */
 }
 
 body {
   background-color: #222;
   background-image: url(/images/darkaurora.png);
   color: #DDD;
-  font-family: Munro; /*'Trebuchet MS';*/
+  font-family: 'Trebuchet MS';
 }
 
 body #slides h1 {
@@ -173,7 +168,7 @@ p {
 }
 
 .withphoto {
-  background-position: 650px 0;
+  background-position: 530px 0;
   background-repeat: repeat-y;
 }
 
