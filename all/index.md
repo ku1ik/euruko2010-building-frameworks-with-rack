@@ -1,4 +1,4 @@
-!SLIDE first
+!SLIDE
 
 # _Building web framework with Rack_
 
@@ -11,64 +11,75 @@
 
 EuRuKo,  2010/05/30
 
-!SLIDE big
+!SLIDE
 
-## About me
+# I am:
 
- * Senior developer @ Lunar Logic Polska - agile Ruby on Rails development services
- * Working with web for 10 years
- * Using Ruby, Python, Java and others - in love with Ruby since 2006
- * Contributing to Open Source:
-   * CodeRack.org - Rack middleware repository
-   * Open File Fast - Netbeans and JEdit plugin
-   * racksh - console for Rack apps
-   * and many more (check [github.com/sickill](http://github.com/sickill/))
+* Senior developer @ Lunar Logic Polska - agile Ruby on Rails development services
+* Working with web for 10 years
+* Using Ruby, Python, Java and others - in love with Ruby since 2006
 
 !SLIDE
 
-## Why would you need another framework?
+# Open Source contributor:
+
+* CodeRack.org - Rack middleware repository
+* Open File Fast - Netbeans and JEdit plugin
+* racksh - console for Rack apps
+* and many more (check [github.com/sickill](http://github.com/sickill/))
+
+!SLIDE
+
+# Why would you need another framework?
 
 "Because world needs yet another framework ;-)" - Tomash
 
 !SLIDE
 
-## No, you probably don't need it actually :)
-
- * Several mature frameworks
- * Tens of custom/experimental ones
- * "Don't reinvent the wheel", right?
- * But...
+# No, you probably don't need it actually :)
 
 !SLIDE
 
-## But it's so easy that you should at least try
+* Several mature frameworks
+* Tens of custom/experimental ones
+* "Don't reinvent the wheel", right?
+* But...
 
- * Rack provides everything you'll need, is extremely simple but extremely powerful
- * It will help you to better understand HTTP
- * It will make you better developer
- * Your custom framework will be the fastest one *
- * It's fun! A lot of fun :)
+!SLIDE
+
+# But it's so easy that you should at least try
+
+!SLIDE
+
+* Rack provides everything you'll need, is extremely simple but extremely powerful
+* It will help you to better understand HTTP
+* It will make you better developer
+* Your custom framework will be the fastest one *
+* It's fun! A lot of fun :)
 
 !SLIDE
 
 # What is Rack?
 
- * ruby web applications interface
- * library
+!SLIDE
+
+* Ruby web applications interface
+* library
+
+!SLIDE smaller
+
+# Simplest Rack application
+
+    @@@ ruby
+    run lambda do |env|
+      [200, { "Content-type" => "text/plain" }, ["Hello"]]
+    end
 
 !SLIDE
 
-## Simplest Rack application
+# Simplest Rack middleware
 
-@@@ ruby
-    run lambda do |env|
-      [200, { "Content-type" => "text/plain" }, ["Hello EuRuKo 2010!"]]
-    end
-@@@
-
-## Simplest Rack middleware
-
-@@@ ruby
+    @@@ ruby
     class EurukoMiddleware
       def initialize(app)
         @app = app
@@ -79,7 +90,6 @@ EuRuKo,  2010/05/30
         @app.call
       end
     end
-@@@
 
 !SLIDE
 
@@ -87,13 +97,15 @@ EuRuKo,  2010/05/30
 
 !SLIDE
 
-## How does typical web framework look like?
+# How does typical web framework look like?
 
-  * Rails
-  * Merb
-  * Pylons
-  * Django
-  * Rango
+!SLIDE
+
+* Rails
+* Merb
+* Pylons
+* Django
+* Rango
 
 !SLIDE
 
@@ -101,21 +113,18 @@ EuRuKo,  2010/05/30
 
 !SLIDE
 
-## What features we'd like to have?
+# What features we'd like to have?
 
- * dependencies management
- * RESTful routing
- * controllers
-   * session
-   * flash messages
- * views
-   * layouts
-   * templates
-   * partials
- * ORM
- * authentication
- * testing
- * console
+!SLIDE smaller
+
+* dependencies management
+* RESTful routing
+* controllers (session, flash messages)
+* views (layouts, templates, partials)
+* ORM
+* authentication
+* testing
+* console
 
 !SLIDE
 
@@ -127,15 +136,15 @@ EuRuKo,  2010/05/30
 
 !SLIDE withphoto photobundler
 
-## bundler
+# bundler
 
 _"A gem to bundle gems"_
 
 [github.com/carlhuda/bundler](http://github.com/carlhuda/bundler)
 
-!SLIDE big
+!SLIDE
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
 
     source "http://gemcutter.org"
@@ -146,7 +155,6 @@ _"A gem to bundle gems"_
     require "bundler"
     Bundler.setup
     Bundler.require
-@@@
 
 !SLIDE
 
@@ -154,7 +162,7 @@ _"A gem to bundle gems"_
 
 !SLIDE withphoto photousher
 
-## Usher
+# Usher
 
 _"Pure ruby general purpose router with interfaces for rails, rack, email or choose your own adventure"_
 
@@ -162,7 +170,7 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
 
 !SLIDE big
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "usher"
@@ -172,11 +180,10 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
     require APP_ROOT / "config" / "router.rb"
 
     run Foobar::Router
-@@@
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # config/router.rb
 
     module Foobar
@@ -188,7 +195,6 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
         default ExceptionsController.action(:not_found) # 404
       end
     end
-@@@
 
 !SLIDE
 
@@ -196,14 +202,14 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
 
 !SLIDE
 
-## Let's build our base controller
+# Let's build our base controller
 
  * every action is valid Rack endpoint
  * value returned from action becomes body of the response
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
@@ -224,24 +230,24 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
         end
       end
     end
-@@@
 
-!SLIDE big
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # config.ru
     
     require APP_ROOT / "lib" / "base_controller.rb"
     Dir[APP_ROOT / "app" / "controllers" / "*.rb"].each do |f|
       require f
     end
-@@@
 
 !SLIDE
 
-## Now we can create UsersController
+# Now we can create UsersController
 
-@@@ ruby
+!SLIDE small
+
+    @@@ ruby
     # app/controllers/users_controller.rb
 
     class UsersController < Foobar::BaseController
@@ -249,35 +255,34 @@ _"Pure ruby general purpose router with interfaces for rails, rack, email or cho
         "Hello there!"
       end
     end
-@@@
+
+!SLIDE small
+
+# Controllers also need following:
+
+* session access
+* setting flash messages
+* setting HTTP headers
+* redirects
+* url generation
 
 !SLIDE
 
-## Controllers also need following:
-
- * session access
- * setting flash messages
- * setting HTTP headers
- * redirects
- * url generation
- 
-!SLIDE
-
-## rack-contrib
+# rack-contrib
 
 _"Contributed Rack Middleware and Utilities"_
 
 [github.com/rack/rack-contrib](http://github.com/rack/rack-contrib)
 
-## rack-flash
+# rack-flash
 
 _"Simple flash hash implementation for Rack apps"_
 
 [nakajima.github.com/rack-flash](http://nakajima.github.com/rack-flash/)
 
-!SLIDE big
+!SLIDE small
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "rack-flash"
@@ -289,11 +294,10 @@ _"Simple flash hash implementation for Rack apps"_
     use Rack::Session::Cookie
     use Rack::MethodOverride
     use Rack::NestedParams
-@@@
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
@@ -315,13 +319,14 @@ _"Simple flash hash implementation for Rack apps"_
         end
       end
     end
-@@@
 
-!SLIDE medium
+!SLIDE
 
-## Now we can use #session, #flash and #redirect_to
+# Now we can use #session, #flash and #redirect_to
 
-@@@ ruby
+!SLIDE small
+
+    @@@ ruby
     # app/controllers/users_controller.rb
     
     class UsersController < Foobar::BaseController
@@ -334,7 +339,6 @@ _"Simple flash hash implementation for Rack apps"_
         end
       end
     end
-@@@
 
 !SLIDE
 
@@ -342,38 +346,40 @@ _"Simple flash hash implementation for Rack apps"_
 
 !SLIDE withphoto phototilt
 
-## Tilt
+# Tilt
 
 _"Generic interface to multiple Ruby template engines"_
 
 [github.com/rtomayko/tilt](http://github.com/rtomayko/tilt)
 
-!SLIDE big
+!SLIDE
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "tilt"
-@@@
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
       class BaseController
         def render(template=nil)
           template ||= @request.env['x-rack.action-name']
-          template_path = "#{APP_ROOT}/app/views/#{self.class.to_s.underscore}/#{template}.html.erb"
-          layout_path = "#{APP_ROOT}/app/views/layouts/application.html.erb"
+          views_path = "#{APP_ROOT}/app/views"
+          template_path =
+            "#{views_path}/#{self.class.to_s.underscore}/" +
+              "#{template}.html.erb"
+          layout_path =
+            "#{views_path}/layouts/application.html.erb"
           Tilt.new(layout_path).render(self) do
             Tilt.new(template_path).render(self)
           end
         end
       end
     end
-@@@
 
 !SLIDE
 
@@ -381,15 +387,15 @@ _"Generic interface to multiple Ruby template engines"_
 
 !SLIDE withphoto photodm
 
-## DataMapper
+# DataMapper
 
 _"DataMapper is a Object Relational Mapper written in Ruby. The goal is to create an ORM which is fast, thread-safe and feature rich."_
 
 [datamapper.org](http://datamapper.org/)
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "dm-core"
@@ -402,13 +408,14 @@ _"DataMapper is a Object Relational Mapper written in Ruby. The goal is to creat
       
       property :id, Serial
       property :login, String, :required => true
-      property :password, String, :required => true # don't forget to encrypt in real app
+      property :password, String, :required => true
     end
     
     # config.ru
 
-    Dir[APP_ROOT / "app" / "models" / "*.rb"].each { |f| require f }
-@@@
+    Dir[APP_ROOT / "app" / "models" / "*.rb"].each do |f|
+      require f
+    end
 
 !SLIDE
 
@@ -416,15 +423,15 @@ _"DataMapper is a Object Relational Mapper written in Ruby. The goal is to creat
 
 !SLIDE withphoto photowarden
 
-## Warden
+# Warden
 
 _"General Rack Authentication Framework"_
 
 [github.com/hassox/warden](http://github.com/hassox/warden)
 
-!SLIDE medium
+!SLIDE small
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "warden"
@@ -433,31 +440,38 @@ _"General Rack Authentication Framework"_
     
     use Warden::Manager do |manager|
       manager.default_strategies :password
-      manager.failure_app = ExceptionsController.action(:unauthenticated)
+      manager.failure_app =
+        ExceptionsController.action(:unauthenticated)
     end
 
     require "#{APP_ROOT}/lib/warden.rb"
-@@@
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     # lib/warden.rb
     
-    Warden::Manager.serialize_into_session { |user| user.id }
-    Warden::Manager.serialize_from_session { |key| User.get(key) }
+    Warden::Manager.serialize_into_session do |user|
+      user.id
+    end
+
+    Warden::Manager.serialize_from_session do |key|
+      User.get(key)
+    end
     
     Warden::Strategies.add(:password) do
       def authenticate!
-        u = User.authenticate(params["username"], params["password"])
+        u = User.authenticate(
+              params["username"],
+              params["password"]
+            )
         u.nil? ? fail!("Could not log in") : success!(u)
       end
     end
-@@@
 
-!SLIDE medium
+!SLIDE small
 
-@@@ ruby
+    @@@ ruby
     # lib/base_controller.rb
     
     module Foobar
@@ -475,13 +489,12 @@ _"General Rack Authentication Framework"_
         end
       end
     end
-@@@
 
-!SLIDE medium
+!SLIDE small
 
-## Now we can guard our action:
+# Now we can guard our action:
 
-@@@ ruby
+    @@@ ruby
     # app/controllers/users_controller.rb
     
     class UsersController < Foobar::BaseController
@@ -491,7 +504,6 @@ _"General Rack Authentication Framework"_
         render
       end
     end
-@@@
 
 !SLIDE
 
@@ -499,23 +511,22 @@ _"General Rack Authentication Framework"_
 
 !SLIDE withphoto photoracktest
 
-## rack-test
+# rack-test
 
 _"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on its own or as a reusable starting point for Web frameworks and testing libraries to build on."_
 
 [github.com/brynary/rack-test](http://github.com/brynary/rack-test)
 
-!SLIDE big
+!SLIDE
 
-@@@ ruby
+    @@@ ruby
     # Gemfile
     
     gem "rack-test"
-@@@
 
-!SLIDE medium
+!SLIDE smaller
 
-@@@ ruby
+    @@@ ruby
     require "rack/test"
 
     class UsersControllerTest < Test::Unit::TestCase
@@ -529,11 +540,11 @@ _"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on
         get "/old_dashboard"
         follow_redirect!
 
-        assert_equal "http://example.org/new_dashboard", last_request.url
+        assert_equal "http://example.org/new_dashboard",
+                     last_request.url
         assert last_response.ok?
       end
     end
-@@@
 
 !SLIDE
 
@@ -541,40 +552,45 @@ _"**Rack::Test** is a small, simple testing API for Rack apps. It can be used on
 
 !SLIDE withphoto photoracksh
 
-## racksh (aka Rack::Shell)
+# racksh (aka Rack::Shell)
 
 _"**racksh** is a console for Rack based ruby web applications. It's like Rails _script/console_ or Merb's _merb -i_, but for any app built on Rack"_
 
 [github.com/sickill/racksh](http://github.com/sickill/racksh)
 
-!SLIDE medium
+!SLIDE
 
-## Installation
+# Installation
 
-@@@
+!SLIDE
+
+    @@@
     gem install racksh
-@@@
 
-## Example racksh session
+!SLIDE
 
-@@@
-    % racksh
+# Example racksh session
+
+!SLIDE smaller
+
+    @@@
+    $ racksh
     Rack::Shell v0.9.7 started in development environment.
     >> $rack.get "/"
-    => #<Rack::MockResponse:0xb68fa7bc @body="<html>...", @headers={"Content-Type"=>"text/html", "Content-Length"=>"1812"}, @status=200, ...
+    => #<Rack::MockResponse:0xb68fa7bc @body="<html>...",
+       @headers={"Content-Type"=>"text/html", "Content-Length"=>"1812"},
+       @status=200, ...
     >> User.count
     => 123
-@@@
+
+!SLIDE
+
+# Questions?
 
 !SLIDE last
 
 # That's it!
 
-Slides available at: [euruko2010.sickill.net](http://euruko2010.sickill.net/)
-
 Example code available at: [github.com/sickill/example-rack-framework](http://github.com/sickill/example-rack-framework)
 
-email: [marcin.kulik@gmail.com](marcin.kulik@gmail.com) / www: [sickill.net](http://sickill.net/) / twitter: [@sickill](http://twitter.com/sickill/)
-
-# Questions?
-
+email: [marcin.kulik at gmail.com](marcin.kulik@gmail.com) / www: [ku1ik.com](http://ku1ik.com/) / twitter: [@sickill](http://twitter.com/sickill/)
